@@ -20,13 +20,12 @@ class Api
     */
     public function process($params)
     {
-        if(strlen($params["category"]) > 100)
-        {
-            throw new Exception("Category too long");
-        }
-
         if(isset($params["category"]))
         {
+            if(strlen($params["category"]) > 100)
+            {
+                throw new Exception("Category too long");
+            }           
             return $this->getReadability($params["category"]);
         }
         else{
