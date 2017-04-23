@@ -1,16 +1,22 @@
 <?php
 
 class ArticleDto{
-    private $articleAggregate = null;
+    private $articles = array();
+    private $convertedArticle = array();
 
-    function __construct($articleAggregate)
+    function __construct($articles)
     {
-        this->articleAggregate = $articleAggregate
+        $this->articles = $articles;
     }
 
-    public function getArticle()
+    public function getData()
     {
+        foreach($this->articles as $article)
+        {
+            $this->convertedArticle[] = ["score" => $article->getReadabilityScore(), "title" => $article->getTitle()];
+        }
 
+        return $this->convertedArticle;
     }
 
 }

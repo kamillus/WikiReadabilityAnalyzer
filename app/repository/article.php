@@ -36,6 +36,8 @@ class ArticleRepository
         $content2 = json_decode(file_get_contents($this->apiUrl . str_ireplace("@titles", $article_names_csv1, $this->extractsUrl)), true);
         $content3 = json_decode(file_get_contents($this->apiUrl . str_ireplace("@titles", $article_names_csv2, $this->extractsUrl)), true);
         
+        if(count($content1["query"]["pages"]) == 0)
+            throw new Exception('No articles found');
 
         foreach($content1["query"]["pages"] as $key => $val)
             $return_array[] = new Article($val["extract"], $val["title"], $val["pageid"]);

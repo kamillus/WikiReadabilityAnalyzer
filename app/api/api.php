@@ -3,6 +3,7 @@
     require_once("../domain/article.php");
     require_once("../domain/articleAggregate.php");
     require_once("../repository/article.php");
+    require_once("../service/articleDto.php");
 
 /**
     Api calls that fuel the frontend. The class fuels the mot readable paragraph extraction. 
@@ -19,6 +20,11 @@ class Api
     */
     public function process($params)
     {
+        if(strlen($params["category"]) > 100)
+        {
+            throw new Exception("Category too long");
+        }
+
         if(isset($params["category"]))
         {
             return $this->getReadability($params["category"]);
@@ -37,8 +43,9 @@ class Api
     {
         $paragraphRepository = new ArticleRepository();
         $articleAggregate = new ArticleAggregate($paragraphRepository->getFirst50Articles($category));
+        $articleDto = new ArticleDto($articleAggregate->getByScore());
 //        print_r($articleAggregate->getByScore());
-        return json_encode($articleAggregate->getByScore());
+        return json_encode($articleDto->getData());
 
     }
 }
