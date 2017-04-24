@@ -41,7 +41,7 @@ class Api
     private function getReadability($category)
     {
         $paragraphRepository = new ArticleRepository();
-        $articleAggregate = new ArticleAggregate($paragraphRepository->getFirst50Articles($category));
+        $articleAggregate = new ArticleAggregate($paragraphRepository->getFirst50Articles(urlencode($category)));
         $articleDto = new ArticleDto($articleAggregate->getByScore());
 //        print_r($articleAggregate->getByScore());
         return json_encode($articleDto->getData());
